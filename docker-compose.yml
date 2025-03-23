@@ -1,0 +1,62 @@
+services:
+# db:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # - ${MYSQL_LOCAL_HOME}:/var/lib/mysql
+      - ./backup/db_tables:/docker-entrypoint-initdb.d
+    networks:
+      - wordpress-network
+    restart: unless-stopped
+
+#  phpmyadmin:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "8081:80"
+    networks:
+      - wordpress-network
+    restart: unless-stopped
+  
+#  wordpress:
+  wordpress:
+    image: wordpress:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_TABLE_PREFIX: wpn6_
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'http://localhost:8080');
+        define('WP_SITEURL', 'http://localhost:8080');
+    volumes:
+      - ./backup/wordpress/wp-content:/var/www/html/wp-content
+      # - ./backup/wordpress/wp-config.php:/var/www/html/wp-config.php
+    networks:
+      - wordpress-network
+
+networks:
+  wordpress-network:
+
+volumes:
+  mysql-data:
+  wordpress-data:
+
