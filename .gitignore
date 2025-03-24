@@ -6,41 +6,10 @@
 # Diretórios de dados do Docker
 dbdata/
 backup/
-.outros/
-
-# Arquivos de backup WordPress
-backup/wordpress/wp-content/uploads/
-backup/wordpress/wp-content/cache/
-backup/wordpress/wp-content/upgrade/
-backup/wordpress/wp-content/backup-db/
-backup/wordpress/wp-content/updraft/
-backup/wordpress/wp-content/managewp/backups/
-backup/wordpress/wp-content/advanced-cache.php
-backup/wordpress/wp-content/wp-cache-config.php
 
 # Arquivos de log
 *.log
 logs/
 
-# Arquivos temporários
-*.tmp
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Arquivos de IDE e editores
-.idea/
-.vscode/
-*.sublime-project
-*.sublime-workspace
-*.komodoproject
-.komodotools/
-nbproject/
-.project
-.buildpath
-.settings/
-
-# Arquivos de dependências
-node_modules/
-vendor/
+# Outros
+.outros/

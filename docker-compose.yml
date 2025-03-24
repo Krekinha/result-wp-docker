@@ -8,28 +8,15 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - mysql-data:/var/lib/mysql
-      # - ${MYSQL_LOCAL_HOME}:/var/lib/mysql
+      # - mysql-data:/var/lib/mysql
+      - ${MYSQL_LOCAL_HOME}:/var/lib/mysql
       - ./backup/db_tables:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
     networks:
       - wordpress-network
     restart: unless-stopped
 
-#  phpmyadmin:
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    depends_on:
-      - db
-    environment:
-      PMA_HOST: db
-      PMA_USER: ${MYSQL_USER}
-      PMA_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "8081:80"
-    networks:
-      - wordpress-network
-    restart: unless-stopped
-  
 #  wordpress:
   wordpress:
     image: wordpress:latest
